@@ -36,7 +36,19 @@ Now in the folder you just cloned make a new file called `README.md` and add the
 # [First Name Last Name]
 ```
 
-md stands for markdown. Markdown is a style of marking a file in a simplified way that can be converted by a markdown reader into a semi-styled HTML page. We made this file so you could test pushing a change up to GitHub.
+md stands for markdown. Markdown is a style of marking a file in a simplified way that can be converted by a markdown reader into a semi-styled HTML page. We made this file so you could test pushing a change up to GitHub. Before we can push something back to GitHub we need to attach our credentials to the repository. If you only have one GitHub account the easy way is to run these commands:
+
+```
+git config --global user.name "Your Name"
+git config --global user.email "Your Email Address With GitHub"
+```
+
+If your like me and have lots of GitHub accounts and/or use SSH you'll probably want to add your credentals locally. This means only this repository will use these credentails, they will not be auto applied to every git repo you have:
+
+```
+git config --local user.name "Your Name"
+git config --local user.email "Your Email Address With GitHub"
+```
 
 Now in your terminal push the change back to GitHub:
 
@@ -45,6 +57,7 @@ git add .
 git commit -m "Testing a git push."
 git push
 ```
+**NOTE**: If you get a warning that you need to initalize your repository (init) your in the wrong folder! Don't forget to step inside (cd into) your repositories folder.
 
 If you need help pushing your changes follow [these instructions](https://docs.github.com/en/free-pro-team@latest/github/using-git/pushing-commits-to-a-remote-repository).
 
