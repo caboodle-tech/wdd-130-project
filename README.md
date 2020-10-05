@@ -60,4 +60,4 @@ git push
 ```
 
 ## 4:
-Start working on your project! Your [instructions are here](#) and the [grading criteria is here](#).
+Start working on your project! Your [instructions are here](docs/instructions.md) and the [grading criteria is here](docs/grading.md).
