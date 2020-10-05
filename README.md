@@ -4,18 +4,60 @@ This is the starting repository for Brother Keers' WDD 130 class.
 ## Installation
 Before you can start using this repository for your project you need to complete the following steps:
 
-0. Create a GitHub account if you do not have one.
-1. Fork a copy of this repository to your GitHub account.
-2. Clone your forked copy of this repository to your computer.
-3. Start working on your website and don't forget to push up your changes (progress) often.
+0. Create a GitHub account if you do not have one; you get a pro account for free as a student, just use your student email. 
+1. Create your own repository online with GitHub.
+2. Clone your new repository to your computer, add a README, and push the change back to GitHub.
+3. Download a copy of this repositories code to your computer and then paste it into your cloned repository. Push these changes up to GitHub.
+4. Start working on your website and don't forget to push up your changes (progress) often.
 
-This is the bare minimum easy way to get going with this project. If you are already familiar with git and GitHub you can ignore these steps and use your own workflow. If this is all brand new to you please follow these steps and review the help section below.
+This is an easy way to get going with this project. If you are already familiar with git and GitHub you can ignore these steps and use your own workflow. If this is all brand new to you please follow these steps and review the help section below.
 
-## Helpful Links
-If some of the above steps don't make sense to you the following links should help.
+## 0:
+You need a GitHub account for this project. If you have one already you do not need to create a new one, use your existing account. As a student you qualify for free access to GitHub Pro so signup with your student email. If you have an account already and want Pro for free you can link your student email to your existing account.
 
-To fork a repository this [manual page](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/fork-a-repo) or [this video](https://youtu.be/p_uOrMNXOSk) can help. Please note that you do not and should not keep your forked code in sync.
+## 1:
+Follow [these instructions](https://docs.github.com/en/free-pro-team@latest/github/getting-started-with-github/create-a-repo) to create a new repository. Please make the following adjustments when creating your repository:
 
-To clone a repository this [manual page](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository) page or [this video](https://youtu.be/CKcqniGu3tA) can help.
+- Name your reposirty: wdd-130-[Your Lowercase Last Name Here] --> Example: wdd-130-keers
+- Do not initialize your repository with a README; I have one for you already. If you accidentally did just replace it later.
+- Do not follow the instructions to try your first commit. These instructions are for online edits to your repository but we will do all our edits locally on your own computer.
 
-To commit changes and push changes back to GitHub this [manual page](https://docs.github.com/en/free-pro-team@latest/github/managing-files-in-a-repository/adding-a-file-to-a-repository-using-the-command-line) or [this video](https://youtu.be/2P9eIZxXVrE) can help.
+## 2:
+Follow [these instructions](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/cloning-a-repository) to clone your new repository to your computer. Please keep the following in mind:
+
+- I use SSH but HTTPS is easier if your new to GitHub; if you choose to go the SSH route your on your own.
+- You may need to follow the Cloning an empty repository instructions.
+- Do not use GitHub Desktop. Ignore any instructions that try to teach you that.
+- When you run the git clone command in your terminal (command line) the files will be copied to that location. Make sure your in the location you want the files to be in.
+
+Now in the folder you just cloned make a new file called `README.md` and add the following:
+
+```
+# [First Name Last Name]
+```
+
+md stands for markdown. Markdown is a style of marking a file in a simplified way that can be converted by a markdown reader into a semi-styled HTML page. We made this file so you could test pushing a change up to GitHub.
+
+Now in your terminal push the change back to GitHub:
+
+```
+git add .
+git commit -m "Testing a git push."
+git push
+```
+
+If you need help pushing your changes follow [these instructions](https://docs.github.com/en/free-pro-team@latest/github/using-git/pushing-commits-to-a-remote-repository).
+
+## 3:
+Now download a copy of this repository. Way at the top of this page is a green button, click on that and then choose download zip from the options.
+
+Unzip (unpack) this code into your own repository. Add all the files and commit the changes up to GitHub:
+
+```
+git add .
+git commit -m "Adding base project files."
+git push
+```
+
+## 4:
+Start working on your project! Your [instructions are here](#) and the [grading criteria is here](#).
