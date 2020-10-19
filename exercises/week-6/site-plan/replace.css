@@ -7,7 +7,7 @@
 }
 
 .light-design .primary-color-3 {
-    background-color: coral;
+    background-color: #606041;
 }
 
 .light-design .accent-color-1 {
@@ -27,7 +27,7 @@
 }
 
 .light-design .font-color-3 {
-    background-color: #ffffff;
+    background-color: #dadbcc;
 }
 
 .light-design .logo-outer {
@@ -39,13 +39,13 @@
 }
 
 .light-design header {
-    background-color: coral;
-    color: #ffffff;
+    background-color: #606041;
+    color: #dadbcc;
 }
 
 .light-design footer {
-    background-color: coral;
-    color: #ffffff;
+    background-color: #606041;
+    color: #dadbcc;
 }
 
 .light-design .img-1 {
@@ -57,7 +57,7 @@
 }
 
 .light-design .img-3 {
-    border-color: coral;
+    border-color: #606041;
 }
 
 .light-design .img-4 {
@@ -76,14 +76,11 @@
     color: darkslategrey;
 }
 
-.light-design {
-    font-family: cursive;
-}
-
 .light-design h1, .light-design h2, .light-design h3, .light-design h4, .light-design h5, .light-design h6 {
     font-family: monospace;
 }
 
 .light-design {
+    font-family: cursive;
     background-color: #ffffff;
 }
