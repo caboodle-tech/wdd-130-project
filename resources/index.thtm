@@ -1,0 +1,34 @@
+${{author}}      = 'Christopher Keers';
+${{title}}       = 'Resources - WDD 130';
+${{keywords}}    = 'Web, Fundamentals, Project, Website, Resources, BYUI';
+${{description}} = 'This website is the project website for Brigham Young University Idaho's Web Fundamental (WDD 130) class.';
+
+{{HEAD}}
+<body>
+    <div id="page">
+        <header>
+            <div class="content">
+                {{LOGO}}
+                <div id="mobile-nav-button">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="content">
+                <section id="main-content">
+                    <h1>Resources</h1>
+                    <p>
+                        This page houses important resources for this class. Some of these resources will be refereed to explicitly in your exercises (assignments). You may also find these resources helpful in solving challenges, learning more about web fundamentals, programming, and software development, or for growing your professional skills.
+                    </p>
+                </section>
+                <aside id="sidebar">
+                    {{NAV}}
+                    {{SIDEBAR}}
+                </aside>
+            </div>
+        </main>
+        {{FOOTER}}
+    </div>
+</body>
+</html>

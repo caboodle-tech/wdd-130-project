@@ -1,0 +1,45 @@
+{
+    "compile": {
+        "htm": "compilerDefault",
+        "thtm": "compilerDefault"
+    },
+    "compileDirectories": [
+        "challenges",
+        "exercises",
+        "resources"
+    ],
+    "ignoreDir": [
+        "_bkp",
+        "bin",
+        "less",
+        "release",
+        "templates"
+    ],
+    "ignoreFile": [],
+    "output": {
+        "htm": "html",
+        "thtm": "html"
+    },
+    "safeFileExtensions": [
+        "7z",
+        "css",
+        "gif",
+        "htaccess",
+        "html",
+        "jpeg",
+        "jpg",
+        "js",
+        "less",
+        "md",
+        "mp3",
+        "mp4",
+        "ogg",
+        "png",
+        "svg",
+        "ttf",
+        "txt",
+        "woff",
+        "woff2",
+        "zip"
+    ]
+}

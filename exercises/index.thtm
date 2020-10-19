@@ -1,0 +1,37 @@
+${{author}}      = 'Christopher Keers';
+${{title}}       = 'Exercises - WDD 130';
+${{keywords}}    = 'Web, Fundamentals, Project, Website, Homework, BYUI, Exercises';
+${{description}} = 'This website is the project website for Brigham Young University Idaho's Web Fundamental (WDD 130) class.';
+
+{{HEAD}}
+<body>
+    <div id="page">
+        <header>
+            <div class="content">
+                {{LOGO}}
+                <div id="mobile-nav-button">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="content">
+                <section id="main-content">
+                    <h1>Exercises</h1>
+                    <p>
+                        This directory and it's child directories are for the various exercises (assignments) you will do throughout the semester. The instructions for these assignments will be given to you in Canvas. You will mostly interact with the exercise files in your code editor but we have pre-structured them on this website so you can easily test them. This website will also be the means of receiving credit for completing an exercise. The instructor or a teaching assistant will visit your website weekly and check that you have completed the required exercises. Make sure your push your changes to GitHub often including deploying the latest version of your GitHub Pages website.
+                    </p>
+                    <p>
+                        Please use the drop down navigation menus to view the exercise files online.
+                    </p>
+                </section>
+                <aside id="sidebar">
+                    {{NAV}}
+                    {{SIDEBAR}}
+                </aside>
+            </div>
+        </main>
+        {{FOOTER}}
+    </div>
+</body>
+</html>

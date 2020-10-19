@@ -1,0 +1,89 @@
+.dark-design .primary-color-1 {
+    background-color: aquamarine;
+}
+
+.dark-design .primary-color-2 {
+    background-color: blueviolet;
+}
+
+.dark-design .primary-color-3 {
+    background-color: coral;
+}
+
+.dark-design .accent-color-1 {
+    background-color: darkslategrey;
+}
+
+.dark-design .accent-color-2 {
+    background-color: firebrick;
+}
+
+.dark-design .accent-color-3 {
+    background-color: gold;
+}
+
+.dark-design .font-color-1 {
+    background-color: #000000;
+}
+
+.dark-design .font-color-3 {
+    background-color: #ffffff;
+}
+
+.dark-design .logo-outer {
+    background-color: aquamarine;
+}
+
+.dark-design .logo-inner {
+    background-color: blueviolet;
+}
+
+.dark-design header {
+    background-color: coral;
+    color: #ffffff;
+}
+
+.dark-design footer {
+    background-color: coral;
+    color: #ffffff;
+}
+
+.dark-design .img-1 {
+    border-color: aquamarine;
+}
+
+.dark-design .img-2 {
+    border-color: blueviolet;
+}
+
+.dark-design .img-3 {
+    border-color: coral;
+}
+
+.dark-design .img-4 {
+    border-color: darkslategrey;
+}
+
+.dark-design .img-5 {
+    border-color: firebrick;
+}
+
+.dark-design .img-6 {
+    border-color: gold;
+}
+
+.dark-design a {
+    color: darkslategrey;
+}
+
+.dark-design {
+    font-family: cursive;
+}
+
+.dark-design h1, .dark-design h2, .dark-design h3, .dark-design h4, .dark-design h5, .dark-design h6 {
+    font-family: monospace;
+}
+
+.dark-design {
+    background-color: #ffffff;
+}
