@@ -8,8 +8,11 @@
         "exercises",
         "resources"
     ],
+    "compileFiles": [
+        "LICENSE-CC-BY-NC-SA",
+        "LICENSE-MIT"
+    ],
     "ignoreDir": [
-        "_bkp",
         "bin",
         "less",
         "release",
