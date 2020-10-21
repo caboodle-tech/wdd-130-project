@@ -1,2 +1,3 @@
 bin/components/db.sqlite
 relase/*
+!release/.gitkeep
