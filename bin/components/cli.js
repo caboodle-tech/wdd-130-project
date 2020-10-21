@@ -14,6 +14,7 @@ class CLI {
         this.ready      = false;
         this.readyCount = 0;
         this.settings   = {};
+        this.stats      = {};
         this.SQL        = null;
         this.templates  = {};
         this.initialize();
@@ -66,6 +67,15 @@ class CLI {
             }
         }
 
+        // Reset stats.
+        this.stats = {
+            'dcopied': 0,
+            'fcompiled': 0,
+            'fcopied': 0,
+            'fignored': 0,
+            'time': process.hrtime()
+        }
+
         // Compile the root directory without recursion.
         this.processDirs( '.', false );
 
@@ -104,15 +114,26 @@ class CLI {
 
         } );
 
+        /**
+         * The compiling may have updated database records.
+         * Save any changes and close the database.
+         */
         this.saveDatabase();
         this.closeDatabase();
+
+        // Record process time.
+        this.stats.time = this.getStatTimestamp( process.hrtime( this.stats.time ) );
 
     }
 
     compilerDefault( location, passBack ) {
 
+        // Setup key variables.
         let needsCompile = false;
         let file         = '';
+        let hash         = md5( location );
+        let mtime        = new Date( fs.statSync( location ).mtime );
+        mtime            = mtime.toGMTString();
 
         // Determine what the output file type should be.
         let ext = path.parse( location ).ext.replace( '.', '' );
@@ -131,29 +152,16 @@ class CLI {
         // If this file is missing from the release directory compile it.
         if ( ! fs.existsSync( dest ) ) {
             needsCompile = true;
-        }
-
-        /**
-         * 
-         */
-        let hash  = md5( location );
-        let mtime = new Date( fs.statSync( location ).mtime );
-        mtime = mtime.toGMTString();
-        let result = this.DB.exec( "SELECT modified FROM history WHERE file = '" + hash + "';" );
-        if ( result.length > 0 ) {
-            let cur = mtime
-            let old = result[0].values[0][0];
-            if ( cur != old ){
-                needsCompile = true;
-                this.DB.exec( "UPDATE history SET modified = '" + mtime + "' WHERE file = '" + hash + "';" );
-            }
+            // Insert or update this files record; there is a 50/50 chance it needs updating.
+            this.DB.exec( "INSERT OR REPLACE INTO history (file, modified) VALUES ('" + hash + "', '" + mtime + "');" );
         } else {
-            this.DB.exec( "INSERT INTO history VALUES ('" + hash + "', '" + mtime + "');" );
-            needsCompile = true;
+            needsCompile = ! this.getFileTrackingStatus( hash, mtime );
         }
 
         if ( needsCompile ) {
-            console.log('Compiled: '+location);
+            
+            // Update stats.
+            this.stats.fcompiled += 1;
 
             // Get the file contents and pull any variables from it.
             file     = fs.readFileSync( location, { encoding: 'utf8' } );
@@ -198,6 +206,9 @@ class CLI {
                 file = file.replace( regex, vars[ varProp ] );
             }
 
+        } else {
+            // Update stats.
+            this.stats.fignored += 1;
         }
         
         /**
@@ -209,19 +220,34 @@ class CLI {
         } else {
             if ( needsCompile ) {
                 this.saveCompiledFile( file, dest );
-            } else {
-                console.log( 'Skipped: '+ dest );
             }
         }
 
     }
 
     copyFileToRelease( location ) {
-        fs.copyFileSync(
-            location,
-            path.join( 'release', location ),
-            { encoding: 'utf8' }
-        );
+
+        let dest    = path.join( 'release', location );
+        let hash    = md5( location );
+        let mtime   = new Date( fs.statSync( location ).mtime );
+        mtime       = mtime.toGMTString();
+        let tracked = this.getFileTrackingStatus( hash, mtime );
+        
+        
+        // Is this file untracked or missing in the release directory?
+        if ( ! tracked || ! fs.existsSync( dest ) ) {
+
+            // Yes. Update stats.
+            this.stats.fcopied += 1;
+
+            // Copy file to release directory.
+            fs.copyFileSync(
+                location,
+                path.join( 'release', location ),
+                { encoding: 'utf8' }
+            );
+
+        }
     }
 
     /**
@@ -259,6 +285,74 @@ class CLI {
         console.log( '\x1B[0;31m' + err + '\x1B[0m' );
         this.closeDatabase();
         process.exit();
+    }
+
+    getFileTrackingStatus( hash, mtime ) {
+
+        // Check if this file needs compiling based on its modified time.
+        let result = this.DB.exec( "SELECT modified FROM history WHERE file = '" + hash + "';" );
+
+        // Did we get a result?
+        if ( result.length > 0 ) {
+
+            // Yes.
+            let old = result[0].values[0][0];
+            if ( mtime != old ){
+                this.DB.exec( "UPDATE history SET modified = '" + mtime + "' WHERE file = '" + hash + "';" );
+                return false;
+            }
+
+        } else {
+
+            // No. Start tracking this file.
+            this.DB.exec( "INSERT INTO history VALUES ('" + hash + "', '" + mtime + "');" );
+            return false;
+
+        }
+
+        return true;
+
+    }
+
+    getStatBlock() {
+        
+let block = `
+----------------
+Files compiled:  ${this.stats.fcompiled}
+Files ignored:   ${this.stats.fignored}
+Files copied:    ${this.stats.fcopied}
+Folders created: ${this.stats.dcopied}
+----------------
+Compile completed in: ${this.stats.time}
+`;
+
+        return block;
+    }
+
+    getStatTimestamp( ary ) {
+
+        let sec = ary[0];
+        let ns  = ary[1];
+        let ms  = ( ns / 1000000 ).toFixed( 2 );
+        let min = 0;
+        let hr  = 0;
+
+        if ( sec >= 60 ) {
+            min = Math.round( sec / 60 );
+            sec = Math.round( 60 * ( sec / 60 % 1 ).toFixed( 4 ) );
+        } 
+        
+        if ( min >= 60 ) {
+            hr  = Math.round( min / 60 );
+            min = Math.round( 60 * ( min / 60 % 1 ).toFixed( 4 ) );
+        }
+
+        if ( sec > 0 ){ sec = sec + 'sec '; } else { sec = ''; }
+        if ( min > 0 ){ min = min + 'min '; } else { min = ''; }
+        if ( hr > 0 ){ hr = hr + 'hr '; } else { hr = ''; }
+        
+        return hr + min + sec + ms + 'ms';
+
     }
 
     getTimestamp() {
@@ -403,7 +497,12 @@ class CLI {
     processDirs( dir, recursive ) {
 
         // Create this directory in the release folder if its missing.
-        fs.mkdirSync( path.join( 'release', dir ), { recursive: true } );
+        let dest = path.join( 'release', dir );
+        if ( ! fs.existsSync( dest ) ) {
+            // Update stats and make directory.
+            this.stats.dcopied += 1;
+            fs.mkdirSync( dest, { recursive: true } );
+        }
 
         // Loop through all items in this directory and process accordingly.
         let items = fs.readdirSync( dir );
@@ -448,9 +547,8 @@ class CLI {
                 break;
             case 'compile':
                 if ( this.isReady( 'compile' ) ) {
-                    console.time('Compiled');
                     this.compileRel();
-                    console.timeEnd('Compiled');
+                    console.log( this.getStatBlock() );
                 }
                 break;
             case 'w':
