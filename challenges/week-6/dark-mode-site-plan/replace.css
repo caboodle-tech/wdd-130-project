@@ -1,3 +1,16 @@
+.dark-design {
+    font-family: cursive;
+    background-color: #ffffff;
+}
+
+.dark-design a {
+    color: darkslategrey;
+}
+
+.dark-design h1, .dark-design h2, .dark-design h3, .dark-design h4, .dark-design h5, .dark-design h6 {
+    font-family: monospace;
+}
+
 .dark-design .primary-color-1 {
     background-color: aquamarine;
 }
@@ -70,20 +83,4 @@
 
 .dark-design .img-6 {
     border-color: gold;
-}
-
-.dark-design a {
-    color: darkslategrey;
-}
-
-.dark-design {
-    font-family: cursive;
-}
-
-.dark-design h1, .dark-design h2, .dark-design h3, .dark-design h4, .dark-design h5, .dark-design h6 {
-    font-family: monospace;
-}
-
-.dark-design {
-    background-color: #ffffff;
 }
