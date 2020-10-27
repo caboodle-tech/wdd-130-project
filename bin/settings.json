@@ -4,8 +4,12 @@
         "thtm": "compilerDefault"
     },
     "compileDirectories": [
+        "assets",
         "challenges",
+        "css",
         "exercises",
+        "fonts",
+        "js",
         "resources"
     ],
     "compileFiles": [

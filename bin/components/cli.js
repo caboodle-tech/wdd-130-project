@@ -4,6 +4,18 @@ const md5       = require( './md5' );
 const path      = require('path');
 const process   = require('process');
 
+/**
+ * CALL IN (REQUIRE) YOUR COMPILER FILES
+ * ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+ */
+
+const compilerDefault = require( './compilers/default' );
+
+/**
+ * ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+ * END CALLING IN (REQUIRE) COMPILER FILES
+ */
+
 class CLI {
 
     constructor() {
@@ -47,7 +59,7 @@ class CLI {
         } catch( err ){}
     }
 
-    compileRel() {
+    compile() {
 
         // Make the release directory if its missing.
         try {
@@ -70,7 +82,9 @@ class CLI {
         // Reset stats.
         this.stats = {
             'dcopied': 0,
+            'dignored': -1, // Remove the current dir (parent) from the stats.
             'fcompiled': 0,
+            'fskipped': 0,
             'fcopied': 0,
             'fignored': 0,
             'time': process.hrtime()
@@ -102,15 +116,19 @@ class CLI {
                 let name = path.parse( dir ).name;
                 dir = dir.replace( name + ext, '' );
                 fs.mkdirSync( dir, { recursive: true } );
+                this.stats.dcopied += 1;
+                // DO NOT ADD to the dignored count here.
             }
 
-            // Send this file off to be compiled and saved.
-            let ext = path.parse( file ).ext.replace( '.', '' );
-            let compiler = this.compilers[ ext ];
-            if ( compiler == undefined ) {
-                compiler = 'compilerDefault';
+            // Send this file off to be compiled and saved if it needs it.
+            if ( this.needsCompile( file ) ) {
+                let ext = path.parse( file ).ext;
+                let compiler = this.compilers[ ext.replace( '.', '' ) ];
+                if ( compiler == undefined ) {
+                    compiler = 'compilerDefault';
+                }
+                this[ compiler ]( file );
             }
-            this[ compiler ]( file );
 
         } );
 
@@ -121,109 +139,27 @@ class CLI {
         this.saveDatabase();
         this.closeDatabase();
 
+        // Remove the release dir from the stats count.
+
+
         // Record process time.
         this.stats.time = this.getStatTimestamp( process.hrtime( this.stats.time ) );
 
     }
 
-    compilerDefault( location, passBack ) {
+    /**
+     * ADD COMPILER CALLS HERE
+     * ▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼▼
+     */
 
-        // Setup key variables.
-        let needsCompile = false;
-        let file         = '';
-        let hash         = md5( location );
-        let mtime        = new Date( fs.statSync( location ).mtime );
-        mtime            = mtime.toGMTString();
-
-        // Determine what the output file type should be.
-        let ext = path.parse( location ).ext.replace( '.', '' );
-        let out = this.compilers.outputs[ ext ];
-        if ( ! out ) {
-            // Default to HTML.
-            out = 'html';
-        }
-        out = '.' + out;
-        
-        // Replace the original file and extension from the path (location).
-        let name = path.parse( location ).name;
-        let dest = location.replace( name + '.' + ext, name + out );
-        dest     = path.join( 'release', dest );
-
-        // If this file is missing from the release directory compile it.
-        if ( ! fs.existsSync( dest ) ) {
-            needsCompile = true;
-            // Insert or update this files record; there is a 50/50 chance it needs updating.
-            this.DB.exec( "INSERT OR REPLACE INTO history (file, modified) VALUES ('" + hash + "', '" + mtime + "');" );
-        } else {
-            needsCompile = ! this.getFileTrackingStatus( hash, mtime );
-        }
-
-        if ( needsCompile ) {
-            
-            // Update stats.
-            this.stats.fcompiled += 1;
-
-            // Get the file contents and pull any variables from it.
-            file     = fs.readFileSync( location, { encoding: 'utf8' } );
-            let obj  = this.stripVariables( file );
-            let vars = obj.vars;
-            file     = obj.file;
-
-            // Add the compile time to the variables object.
-            vars[ 'TIMESTAMP' ] = this.getTimestamp();
-
-            // Add the global variables the variables object.
-            vars = Object.assign( vars, this.globalVars );
-
-            // Build the correct relative path and add that to the variables object.
-            let count = location.replace( '.' + path.sep, '' ).split( path.sep ).length;
-            if ( count > 0 ) {
-                count--;
-            }
-            let rel = '';
-            while ( count > 0 ) {
-                rel += '../';
-                count--;
-            }
-            vars[ 'PATH' ] = rel;
-
-            // Loop through the template parts replacing variables with their values.
-            let parts = this.templates;
-            for( const tempProp in parts ) {
-                let temp = parts[ tempProp ];
-                for( const varProp in vars ) {
-                    let regex = new RegExp( '{{' + varProp + '}}', 'g' );
-                    temp = temp.replace( regex, vars[ varProp ] );
-                }
-                // Replace template variables with their actual values in the file.
-                let regex = new RegExp( '{{' + tempProp + '}}', 'g' );
-                file = file.replace( regex, temp );
-            }
-
-            // Replace variables with their actual values in the file.
-            for( const varProp in vars ) {
-                let regex = new RegExp( '{{' + varProp + '}}', 'g' );
-                file = file.replace( regex, vars[ varProp ] );
-            }
-
-        } else {
-            // Update stats.
-            this.stats.fignored += 1;
-        }
-        
-        /**
-         * If a custom compiler called our built in one they may need
-         * the result back instead of us immediately saving it.
-         */
-        if ( passBack ) {
-            return [ file, needsCompile ];
-        } else {
-            if ( needsCompile ) {
-                this.saveCompiledFile( file, dest );
-            }
-        }
-
+    compilerDefault( location, data, passBack ) {
+        compilerDefault.call( this, location, data, passBack );
     }
+
+    /**
+     * ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
+     * END ADDING COMPILER CALLS
+     */
 
     copyFileToRelease( location ) {
 
@@ -237,7 +173,6 @@ class CLI {
         // Is this file untracked or missing in the release directory?
         if ( ! tracked || ! fs.existsSync( dest ) ) {
 
-            // Yes. Update stats.
             this.stats.fcopied += 1;
 
             // Copy file to release directory.
@@ -247,6 +182,8 @@ class CLI {
                 { encoding: 'utf8' }
             );
 
+        } else {
+            this.stats.fignored += 1;
         }
     }
 
@@ -317,12 +254,16 @@ class CLI {
     getStatBlock() {
         
 let block = `
-----------------
-Files compiled:  ${this.stats.fcompiled}
-Files ignored:   ${this.stats.fignored}
-Files copied:    ${this.stats.fcopied}
-Folders created: ${this.stats.dcopied}
-----------------
+====================================
+Files that were compiled:       ${this.stats.fcompiled}
+Files skipped compiling:        ${this.stats.fskipped}
+------------------------------------
+New files copied to release:    ${this.stats.fcopied + this.stats.fcompiled}
+Existing files in release:      ${this.stats.fignored + this.stats.fskipped}
+------------------------------------
+New folders created in release: ${this.stats.dcopied}
+Existing folders in release:    ${this.stats.dignored}
+====================================
 Compile completed in: ${this.stats.time}
 `;
 
@@ -494,14 +435,56 @@ Compile completed in: ${this.stats.time}
         this.templates = templates;
     }
 
+    needsCompile( location ) {
+
+        // Setup key variables.
+        let result = false;
+        let hash   = md5( location );
+        let mtime  = new Date( fs.statSync( location ).mtime );
+        mtime      = mtime.toGMTString();
+
+        // Determine what the output file type should be.
+        let ext = path.parse( location ).ext;
+        let out = this.compilers.outputs[ ext.replace( '.', '' ) ];
+        if ( ! out ) {
+            // Default to HTML.
+            out = 'html';
+        }
+        out = '.' + out;
+        
+        // Replace the original file and extension from the path (location).
+        let name = path.parse( location ).name;
+        let dest = location.replace( name + ext, name + out );
+        dest     = path.join( 'release', dest );
+
+        // If this file is missing from the release directory compile it.
+        if ( ! fs.existsSync( dest ) ) {
+            // Insert or update this files record; there is a 50/50 chance it needs updating.
+            this.DB.exec( "INSERT OR REPLACE INTO history (file, modified) VALUES ('" + hash + "', '" + mtime + "');" );
+            result = true;
+        } else {
+            result = ! this.getFileTrackingStatus( hash, mtime );
+        }
+
+        if ( result ) {
+            this.stats.fcompiled += 1;
+        } else {
+            this.stats.fskipped += 1;
+        }
+
+        return result;
+
+    }
+
     processDirs( dir, recursive ) {
 
         // Create this directory in the release folder if its missing.
         let dest = path.join( 'release', dir );
         if ( ! fs.existsSync( dest ) ) {
-            // Update stats and make directory.
             this.stats.dcopied += 1;
             fs.mkdirSync( dest, { recursive: true } );
+        } else {
+            this.stats.dignored += 1;
         }
 
         // Loop through all items in this directory and process accordingly.
@@ -519,8 +502,11 @@ Compile completed in: ${this.stats.time}
                 // No. Compile the file if its extension is in the compile list.
                 let ext = path.parse( location ).ext.replace( '.', '' );
                 if ( this.compilers.types.includes( ext ) ) {
-                    let compiler = this.compilers[ ext ];
-                    this[ compiler ]( location );
+                    // Does this file actually need to be compiled?
+                    if ( this.needsCompile( location ) ) {
+                        let compiler = this.compilers[ ext ];
+                        this[ compiler ]( location );
+                    }
                 } else if ( this.settings.safeFileExtensions.includes( ext ) ) {
                     // If this file is in the safe list copy it to release; no compile needed.
                     this.copyFileToRelease( location );
@@ -547,7 +533,7 @@ Compile completed in: ${this.stats.time}
                 break;
             case 'compile':
                 if ( this.isReady( 'compile' ) ) {
-                    this.compileRel();
+                    this.compile();
                     console.log( this.getStatBlock() );
                 }
                 break;
