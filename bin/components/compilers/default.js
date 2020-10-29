@@ -72,7 +72,7 @@ module.exports = function( location, data, passBack ) {
     // Build the path to the destination.
     let dest = location.replace( name + ext, name + out );
     dest     = path.join( 'release', dest );
-    
+
     /**
      * If a custom compiler called our built in one they may need
      * the result back instead of us immediately saving it.

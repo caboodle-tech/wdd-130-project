@@ -10,6 +10,7 @@ const process   = require('process');
  */
 
 const compilerDefault = require( './compilers/default' );
+const compilerJamed   = require( './compilers/jamed' );
 
 /**
  * ▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲▲
@@ -153,7 +154,11 @@ class CLI {
      */
 
     compilerDefault( location, data, passBack ) {
-        compilerDefault.call( this, location, data, passBack );
+        return compilerDefault.call( this, location, data, passBack );
+    }
+
+    compilerJamed( location, data, passBack ) {
+        return compilerJamed.call( this, location, data, passBack );
     }
 
     /**

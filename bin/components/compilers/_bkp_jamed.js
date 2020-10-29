@@ -1,36 +1,42 @@
 const fs   = require( 'fs' );
-const path = require('path');
 
-module.exports = function( location, data, passBack ) {
+module.exports = function( location ) {
 
-    // Determine if we need to load the file or if we were sent the data already.
-    let file = '';
-
-    if ( data != undefined ) {
-        if ( data.length > 2 ) {
-            file = data;
-        }
-    }
-
-    if ( file.length < 2 ) {
-        file = fs.readFileSync( location, { encoding: 'utf8' } );
-    }
-
+    let file  = fs.readFileSync( location, { encoding: 'utf8' } ) + '\n';
     let lines = file.split( '\n' );
+    //console.log( lines );
+    //return;
     let html  = '';
 
-    let codeBlock   = false;
-    let codeCounter = 0;
+    let codeBlock = false;
+    let blockNewline = false;
+    let tagOpen   = 0;
 
     lines.forEach( function( line ) {
 
         if ( line.length < 1 ) {
             return;
         }
+
+        // Record the space
+        let spaces = line.length - line.trimStart().length;
+        if ( spaces > 0 ) {
+            
+            spaces = ( '_' ).repeat( spaces );
+            
+        } else {
+            spaces = '';
+        }
+
         
+        let noTags    = true;
+        let skipNewline = false;
         let startTags = line.match( /\[ *\w.*?\]/g );
 
         if ( startTags && startTags.length > 0 ) {
+
+            noTags   = false;
+            tagOpen += 1;
 
             startTags.forEach( function( startTag, startIndex ) {
 
@@ -39,13 +45,15 @@ module.exports = function( location, data, passBack ) {
                 switch ( tag.toLowerCase() ) {
                     case 'a':
                         line = line.replace( startTag, genericElementOpen( startTag, 'a' ) );
+                        blockNewline = true;
                         break;
                     case 'br':
                         line = line.replace( startTag, genericElementOpen( startTag, 'br' ) );
                         break;
                     case 'blockquote':
                     case 'quote':
-                        line = line.replace( startTag, genericElementOpen( startTag, 'blockquote' ) );
+                        line = line.replace( startTag, genericElementOpen( startTag, 'blockquote', true ) );
+                        skipNewline = true;
                         break;
                     case 'cite':
                         line = line.replace( startTag, genericElementOpen( startTag, 'cite' ) );
@@ -57,13 +65,16 @@ module.exports = function( location, data, passBack ) {
                         line = line.replace( startTag, codeOpenElement( startTag, codeBlock ) );
                         break;
                     case 'div':
-                        line = line.replace( startTag, genericElementOpen( startTag, 'div' ) );
+                        line = line.replace( startTag, genericElementOpen( startTag, 'div', true ) );
+                        skipNewline = true;
                         break;
                     case 'dl':
-                        line = line.replace( startTag, genericElementOpen( startTag, 'dl' ) );
+                        line = line.replace( startTag, genericElementOpen( startTag, 'dl', true ) );
+                        skipNewline = true;
                         break;
                     case 'dt':
-                        line = line.replace( startTag, genericElementOpen( startTag, 'dt' ) );
+                        line = line.replace( startTag, genericElementOpen( startTag, 'dt', true ) );
+                        skipNewline = true;
                         break;
                     case 'h1':
                     case 'h2':
@@ -72,27 +83,34 @@ module.exports = function( location, data, passBack ) {
                     case 'h5':
                     case 'h6':
                         line = line.replace( startTag, headerOpenElement( startTag ) );
+                        blockNewline = true;
                         break;
                     case 'hr':
                         line = line.replace( startTag, genericElementOpen( startTag, 'hr' ) );
                         break;
                     case 'key':
                         line = line.replace( startTag, genericElementOpen( startTag ), 'kdb' );
+                        blockNewline = true;
                         break;
                     case 'li':
-                        line = line.replace( startTag, genericElementOpen( startTag, 'li' ) );
+                        line = line.replace( startTag, genericElementOpen( startTag, 'li', true, line ) );
+                        skipNewline = true;
                         break;
                     case 'ol':
-                        line = line.replace( startTag, genericElementOpen( startTag, 'ol' ) );
+                        line = line.replace( startTag, genericElementOpen( startTag, 'ol', true ) );
+                        skipNewline = true;
                         break;
                     case 'p':
-                        line = line.replace( startTag, genericElementOpen( startTag, 'p' ) );
+                        line = line.replace( startTag, genericElementOpen( startTag, 'p', true ) );
+                        skipNewline = true;
                         break;
                     case 'ul':
-                        line = line.replace( startTag, genericElementOpen( startTag, 'ul' ) );
+                        line = line.replace( startTag, genericElementOpen( startTag, 'ul', true ) );
+                        skipNewline = true;
                         break;
                     case 'video':
                         line = line.replace( startTag, videoOpenElement( startTag ) );
+                        blockNewline = true;
                         break;
                 }
 
@@ -105,6 +123,9 @@ module.exports = function( location, data, passBack ) {
 
         if ( endTags && endTags.length > 0 ) {
 
+            noTags  = false;
+            tagOpen -= 1;
+
             endTags.forEach( function( endTag, endIndex ) {
 
                 let tag = endTag.match( /\[ *\/ *\w*/ )[0].replace( /\[ *?\//, '' ).trim();
@@ -112,13 +133,14 @@ module.exports = function( location, data, passBack ) {
                 switch ( tag.toLowerCase() ) {
                     case 'a':
                         line = line.replace( endTag, genericElementClose( 'a' ) );
+                        blockNewline = false;
                         break;
                     case 'br':
                         line = line.replace( endTag, genericElementOpen( endTag, 'br' ) );
                         break;
                     case 'blockquote':
                     case 'quote':
-                        line = line.replace( endTag, genericElementClose( 'blockquote' ) );
+                        line = line.replace( endTag, genericElementClose( 'blockquote', true  ) );
                         break;
                     case 'cite':
                         line = line.replace( endTag, genericElementClose( 'cite' ) );
@@ -128,13 +150,13 @@ module.exports = function( location, data, passBack ) {
                         codeBlock = false;
                         break;
                     case 'div':
-                        line = line.replace( endTag, genericElementClose( 'div' ) );
+                        line = line.replace( endTag, genericElementClose( 'div', true ) );
                         break;
                     case 'dl':
-                        line = line.replace( endTag, genericElementClose( 'dl' ) );
+                        line = line.replace( endTag, genericElementClose( 'dl', true ) );
                         break;
                     case 'dt':
-                        line = line.replace( endTag, genericElementClose( 'dt' ) );
+                        line = line.replace( endTag, genericElementClose( 'dt', true ) );
                         break;
                     case 'h1':
                     case 'h2':
@@ -143,90 +165,76 @@ module.exports = function( location, data, passBack ) {
                     case 'h5':
                     case 'h6':
                         line = line.replace( endTag, headerCloseElement( endTag ) );
+                        blockNewline = false;
                         break;
                     case 'hr':
                         line = line.replace( endTag, genericElementOpen( endTag, 'hr' ) );
                         break;
                     case 'key':
                         line = line.replace( endTag, genericElementClose( 'key' ) );
+                        blockNewline = false;
                         break;
                     case 'li':
-                        line = line.replace( endTag, genericElementClose( 'li' ) );
+                        line = line.replace( endTag, genericElementClose( 'li', true ) );
                         break;
                     case 'ol':
-                        line = line.replace( endTag, genericElementClose( 'ol' ) );
+                        line = line.replace( endTag, genericElementClose( 'ol', true ) );
                         break;
                     case 'p':
-                        line = line.replace( endTag, genericElementClose( 'p' ) );
+                        line = line.replace( endTag, genericElementClose( 'p', true ) );
                         break;
                     case 'ul':
-                        line = line.replace( endTag, genericElementClose( 'ul' ) );
+                        line = line.replace( endTag, genericElementClose( 'ul', true ) );
                         break;
                     case 'video':
                         line = line.replace( endTag, genericElementClose( 'a' ) );
+                        blockNewline = false;
                         break;
                 }
+
+
+               
+                
 
             } );
 
         }
 
-        if( codeBlock ) {
+       //line = line.replace( /^\s*[\r\n]/gm, '' );
 
-            if ( codeCounter > 0 ) {
-                line  = line.replace( /</g, '&lt;' );
-                line  = line.replace( />/g, '&gt;' );
-                line += '\n';
-            } else {
-                line = '\n' + line;
-            }
 
-            codeCounter++;
+        if ( noTags && line.length > 0 ) {
 
-        } else {
+            line = '>>> ' + line;
+            //line = line.replace( /\n/g, '___' );
+            //console.log( line );
+            
+        }
 
-            codeCounter = 0;
-
-            if ( line.length > 0 ) {
-                line = '\n' + line;
-            }
-
+        if( codeBlock && noTags ) {
+            //line = '+++ ' + line + '\n';
         }
 
         if ( line.length > 0 ) {
-            html += line;
+            console.log( '[' + spaces + ']' );
+            html += '\n' + spaces + line;
+            if ( noTags && ! blockNewline ) {
+               // html += '\n';
+            }
         }
 
     } );
 
     html = html.replace( /^\s*[\r\n]/gm, '' );
 
-    // Process any variables.
-    html = this.compilerDefault( location, html, true );
+    console.log( html );
 
-    // Determine what the output file type should be.
-    let ext  = path.parse( location ).ext;
-    let name = path.parse( location ).name;
-    let out  = this.compilers.outputs[ ext.replace( '.', '' ) ];
-    if ( ! out ) {
-        // Default to HTML.
-        out = 'html';
-    }
-    out = '.' + out;
+    //Opening tag: \[ *\w.*?\]
+    //Closing tag: \[ *\/ *\w.*?\]
 
-    // Build the path to the destination.
-    let dest = location.replace( name + ext, name + out );
-    dest     = path.join( 'release', dest );
-
-    /**
-     * If a custom compiler called our built in one they may need
-     * the result back instead of us immediately saving it.
-     */
-    if ( passBack ) {
-        return html;
-    } else {
-        this.saveCompiledFile( html, dest );
-    }
+    // Send to the default compiler for variable processing and saving.
+    //this.compilerDefault( location, file, false );
+    return '';
 }
 
 function getAttributes( content ) {
@@ -308,12 +316,20 @@ function codeOpenElement( content, flag ) {
     return elem;
 }
 
-function genericElementClose( tag ) {
-    return '</' + tag + '>';
+function genericElementClose( tag, newline ) {
+    let html = '</' + tag + '>';
+    if ( newline ) {
+        //html = '\n' + html;
+    }
+    return html;
 }
 
-function genericElementOpen( content, tag ) {
-    return '<' + tag + getAttributes( content ) + '>';
+function genericElementOpen( content, tag, newline ) {
+    let html = '<' + tag + getAttributes( content ) + '>';
+    if ( newline ) {
+        //html = '\n' + html;
+    }
+    return  html;
 }
 
 function headerCloseElement( content ) {
