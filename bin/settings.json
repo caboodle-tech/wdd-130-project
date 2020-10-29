@@ -1,8 +1,7 @@
 {
     "compile": {
-        "jamed": "compilerJamed",
-        "htm": "compilerDefault",
-        "thtm": "compilerDefault"
+        "jhtm": "compilerDefault",
+        "jsd": "compilerShortdown"
     },
     "compileDirectories": [
         "assets",
@@ -25,8 +24,9 @@
     ],
     "ignoreFile": [],
     "output": {
-        "htm": "html",
-        "thtm": "html"
+        "jhtm": "html",
+        "jmd": "html",
+        "jsd": "html"
     },
     "safeFileExtensions": [
         "7z",

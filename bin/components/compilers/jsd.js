@@ -204,20 +204,6 @@ module.exports = function( location, data, passBack ) {
     // Process any variables.
     html = this.compilerDefault( location, html, true );
 
-    // Determine what the output file type should be.
-    let ext  = path.parse( location ).ext;
-    let name = path.parse( location ).name;
-    let out  = this.compilers.outputs[ ext.replace( '.', '' ) ];
-    if ( ! out ) {
-        // Default to HTML.
-        out = 'html';
-    }
-    out = '.' + out;
-
-    // Build the path to the destination.
-    let dest = location.replace( name + ext, name + out );
-    dest     = path.join( 'release', dest );
-
     /**
      * If a custom compiler called our built in one they may need
      * the result back instead of us immediately saving it.
@@ -225,6 +211,21 @@ module.exports = function( location, data, passBack ) {
     if ( passBack ) {
         return html;
     } else {
+
+        // Determine what the output file type should be.
+        let ext  = path.parse( location ).ext;
+        let name = path.parse( location ).name;
+        let out  = this.compilers.outputs[ ext.replace( '.', '' ) ];
+        if ( ! out ) {
+            // Default to HTML.
+            out = 'html';
+        }
+        out = '.' + out;
+
+        // Build the path to the destination.
+        let dest = location.replace( name + ext, name + out );
+        dest     = path.join( 'release', dest );
+
         this.saveCompiledFile( html, dest );
     }
 }
