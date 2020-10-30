@@ -1,14 +1,18 @@
+%var = "value"
+%me = "yes"
+%you="no"
+
 [img url="{{path}}/assets/test.jpg" .class-one .two alt="Test Image" width="100" height="100" map="mapid"]
 
 [table]
     [tr]
-        [th]
-        Header
+        [th colspan = "2lkhedflk"]
+        Header [key]test[/key]
         [/th]
     [tr]
     [tr]
-        [td]
-        This is the data at this level of the table.
+        [td rowspan="2"]
+        This is the data at this level of the table. [kbd]test[/kbd]
         [/td]
     [tr]
 [/table]

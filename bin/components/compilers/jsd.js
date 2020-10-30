@@ -1,5 +1,42 @@
+const { match } = require('assert');
 const fs   = require( 'fs' );
 const path = require('path');
+
+// Improve performance by caching heavily used regular expressions.
+const regex = {
+    'alt': new RegExp( 'alt *= *"(.*?)"', 'i' ),
+    'class': new RegExp( '(?: )(\\.(?:\\w*|-*|_*)*)' ),
+    'colspan': new RegExp( 'colspan *= *"(.*?)"', 'i' ),
+    'data': new RegExp( '(data-.*?) *?= *?"(.*?)', 'gi' ),
+    'header': new RegExp( 'h\d' ),
+    'height': new RegExp( 'height *= *"(.*?)"', 'i' ),
+    'id': new RegExp( ' \\#(?:\\w*|-*|_*)*' ),
+    'lang': new RegExp( 'lang *= *"(.*?)"', 'i' ),
+    'map': new RegExp( 'map *= *"(.*?)"', 'i' ),
+    'newtab': new RegExp( 'newtab *= *"(.*?)"', 'i' ),
+    'numbers': new RegExp( '[^0-9]', 'g' ),
+    'rowspan': new RegExp( 'rowspan *= *"(.*?)"', 'i' ),
+    'title': new RegExp( 'title *= *"(.*?)"', 'i' ),
+    'type': new RegExp( 'type *= *"(.*?)"', 'i' ),
+    'url': new RegExp( 'url *= *"(.*?)"', 'i' ),
+    'varKey': new RegExp( '% *(\\w*) *=' ),
+    'vars': new RegExp( '% *\\w* *= *(?:\'|")\\w*(?:\'|")', 'g' ),
+    'varValue': new RegExp( '= *(?:\'|")(.*?)(?:\'|")' ),
+    'width': new RegExp( 'width *= *"(.*?)"', 'i' )
+};
+
+// The HTML tags we support.
+const genericTags = [ 'blockquote', 'br', 'cite', 'code', 'div', 'dl', 'dt', 'hr', 'i', 'img', 'kbd', 'li', 'ol', 'p', 'pre', 'strong', 'table', 'td', 'th', 'tr' ];
+
+// Alternative names for our supported HTML tags.
+const swapTags = {
+    'b': 'strong',
+    'bold': 'strong',
+    'image': 'img',
+    'italic': 'i',
+    'key': 'kbd',
+    'quote': 'blockquote'
+};
 
 module.exports = function( location, data, passBack ) {
 
@@ -21,16 +58,6 @@ module.exports = function( location, data, passBack ) {
 
     let codeBlock   = false;
     let codeCounter = 0;
-
-    let genericTags = [ 'blockquote', 'br', 'cite', 'div', 'dl', 'dt', 'hr', 'i', 'img', 'kdb', 'li', 'ol', 'p', 'strong', 'table', 'tr' ];
-    let swapTags = {
-        'b': 'strong',
-        'bold': 'strong',
-        'image': 'img',
-        'italic': 'i',
-        'key': 'kdb',
-        'quote': 'blockquote'
-    }
 
     lines.forEach( function( line ) {
 
@@ -66,6 +93,10 @@ module.exports = function( location, data, passBack ) {
                         break;
                     case 'img':
                         line = line.replace( startTag, imageOpenElement( startTag ) );
+                        break;
+                    case 'td':
+                    case 'th':
+                        line = line.replace( startTag, tableDataOpenElement( startTag, tag ) );
                         break;
                     case 'video':
                         line = line.replace( startTag, videoOpenElement( startTag ) );
@@ -118,7 +149,7 @@ module.exports = function( location, data, passBack ) {
                             tag = swapTags[ tag ];
                         }
                         if ( tag ) {
-                            line = line.replace( endTag, genericElementClose( 'a' ) );
+                            line = line.replace( endTag, genericElementClose( tag ) );
                         }
                 }
 
@@ -156,6 +187,17 @@ module.exports = function( location, data, passBack ) {
 
     html = html.replace( /^\s*[\r\n]/gm, '' );
 
+    // Replace any variables.
+    let matches = html.match( regex.vars );
+    
+    if ( matches ) {
+        matches.forEach( match => {
+            let key = match.match( regex.varKey )[1].toUpperCase().trim();
+            let val = match.match( regex.varValue )[1];
+            html = html.replace( match, '${{' + key + '}} = "' + val + '";');
+        } );
+    }
+
     // Process any variables.
     html = this.compilerDefault( location, html, true );
 
@@ -185,22 +227,18 @@ module.exports = function( location, data, passBack ) {
     }
 }
 
-const regex = {
-    'alt': new RegExp( 'alt *= *"(.*?)"', 'i' ),
-    'class': new RegExp( '(?: )(\\.(?:\\w*|-*|_*)*)' ),
-    'data': new RegExp( '(data-.*?) *?= *?"(.*?)', 'gi' ),
-    'header': new RegExp( 'h\d' ),
-    'height': new RegExp( 'height *= *"(.*?)"', 'i' ),
-    'id': new RegExp( ' \\#(?:\\w*|-*|_*)*' ),
-    'lang': new RegExp( 'lang *= *"(.*?)"', 'i' ),
-    'map': new RegExp( 'map *= *"(.*?)"', 'i' ),
-    'newtab': new RegExp( 'newtab *= *"(.*?)"', 'i' ),
-    'numbers': new RegExp( '[^0-9]', 'g' ),
-    'title': new RegExp( 'title *= *"(.*?)"', 'i' ),
-    'type': new RegExp( 'type *= *"(.*?)"', 'i' ),
-    'url': new RegExp( 'url *= *"(.*?)"', 'i' ),
-    'width': new RegExp( 'width *= *"(.*?)"', 'i' )
-};
+function tableDataOpenElement( content, tag ) {
+    let elem = '';
+    if ( tag == 'th' ) {
+        elem += '<th';
+    } else {
+        elem += '<td';
+    }
+    elem += getAttributes( content );
+    elem += getColspan( content );
+    elem += getRowspan( content );
+    return elem + '>';
+}
 
 function imageOpenElement( content ) {
     let elem  = '<img src="' + getUrl( content ) + '"';
@@ -216,6 +254,29 @@ function imageOpenElement( content ) {
     }
 
     return elem + '>';
+}
+
+
+function getColspan( content ) {
+    let m = content.match( regex.colspan );
+    if ( m != null ){
+        let num = m[1].replace( regex.numbers, '' ).trim();
+        if ( num.length > 0 ) {
+            return ' colspan="' + num + '"';
+        }
+    }
+    return '';
+}
+
+function getRowspan( content ) {
+    let m = content.match( regex.rowspan );
+    if ( m != null ){
+        let num = m[1].replace( regex.numbers, '' ).trim();
+        if ( num.length > 0 ) {
+            return ' rowspan="' + num + '"';
+        }
+    }
+    return '';
 }
 
 function getAlt( content ) {

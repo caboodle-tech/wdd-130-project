@@ -582,7 +582,7 @@ Compile completed in: ${this.stats.time}
         if ( matches ) {
             matches.forEach( match => {
                 let key = match.match( /\${{(.*)}}/ )[1].toUpperCase();
-                let val = match.match( /= *(?:'|')(.*)(?:'|") *;/ )[1];
+                let val = match.match( /= *(?:'|")(.*)(?:'|") *;/ )[1];
                 vars[ key ] = val;
                 file = file.replace( match, '' );
             } );
