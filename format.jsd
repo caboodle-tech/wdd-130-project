@@ -8,7 +8,7 @@ This is a long block of text introducing the assignemt.
         [h2]
             Resources
         [/h2]
-        This is a block of text explaining the resource and it has a [a url = "https://example.com" newtab = "yes" ]link[/a] out to a resource. A [a url = "https://example.com" newtab = "yes" ]dup link[/a] for testing.
+        This is a block of text explaining the resource and it has a [a url = "https://example.com"]link[/a] out to a resource. A [a url = "https://example.com" newtab="no"]dup link[/a] for testing.
     [/div]
 
 [h2]
