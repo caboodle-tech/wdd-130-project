@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Positioning Exercise</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <!-- Instructions -->
+    <div class="exercise">
+        <h1>Intro to CSS Grid Layouts</h1>
+        <h2>Positioning Exercises (WDD 130)</h2>
+        <p>
+            Your goal for this assignment is to edit this pages style sheet and solve each of the activities below. You will rearrange the colored boxes in each exercise to match the picture for that exercise.
+        </p>
+    </div>
+    <!-- Exercise 1 -->
+    <div class="exercise">
+        <h2>Exercise 1</h2>
+        <p>
+            In this exercise you will use CSS grid to duplicate the wire frame (picture) you have been given.
+        </p>
+        <button type="button" class="collapsible">Picture</button>
+        <div class="collapsible-content">
+            <p>
+                <img src="images/exercise-1.png" alt="Exercise 1 Image">
+            </p>
+        </div>
+        <div id="content-1" class="content-area">
+            <div class="red"></div>
+            <div class="green"></div>
+            <div class="green"></div>
+            <div class="yellow"></div>
+            <div class="yellow"></div>
+            <div class="blue"></div>
+        </div>
+    </div>
+    <!-- Exercise 2 -->
+    <div class="exercise">
+        <h2>Exercise 2</h2>
+        <p>
+            In this exercise you will demonstrate your positioning skills by partially stacking the boxes on top of one another.
+        </p>
+        <button type="button" class="collapsible">Hint</button>
+        <div class="collapsible-content">
+            <p>
+                Remember that the best way to shift elements around slightly on the page is with margins. You could also use grid. Margins or a grid layout would both work to solve this exercise. If you choose margin remember that you can use a negative margin: <code>margin-top: -20px;</code> 
+            </p>
+            <h3>Properties Used:</h3>
+            <ul>
+                <li>
+                    margin-top, margin-left
+                </li>
+                <li>
+                    <strong>OR</strong>
+                </li>
+                <li>
+                    grid-template-columns: 50px 50px 50px 50px 50px
+                </li>
+            </ul>
+        </div>
+        <button type="button" class="collapsible">Picture</button>
+        <div class="collapsible-content">
+            <p>
+                <img src="images/exercise-2.png" alt="Exercise 2 Image">
+            </p>
+        </div>
+        <div id="content-2" class="content-area">
+            <div class="red"></div>
+            <div class="green"></div>
+            <div class="yellow"></div>
+            <div class="blue"></div>
+        </div>
+    </div>
+    <!-- Exercise 3 -->
+    <div class="exercise">
+        <h2>Exercise 3</h2>
+        <p>
+            In this exercise you will create a two column layout; a common website layout.
+        </p>
+        <button type="button" class="collapsible">Hint</button>
+        <div class="collapsible-content">
+            <p>
+                This exercise is best solved by using a CSS grid layout. Remember to start by make the boxes the correct width first, then you can start moving them around.
+            </p>
+            <h3>Properties Used:</h3>
+            <ul>
+                <li>
+                    display: grid;
+                </li>
+                <li>
+                    grid-template-columns:
+                </li>
+                <li>
+                    grid-column-gap:
+                </li>
+                <li>
+                    grid-column:
+                </li>
+            </ul>
+        </div>
+        <button type="button" class="collapsible">Picture</button>
+        <div class="collapsible-content">
+            <p>
+                <img src="images/exercise-3.png" alt="Exercise 3 Image">
+            </p>
+        </div>
+        <div id="content-3" class="content-area">
+            <div class="red"></div>
+            <div class="green"></div>
+            <div class="yellow"></div>
+            <div class="blue"></div>
+        </div>
+    </div>
+    <!-- Exercise 4 -->
+    <div class="exercise">
+        <h2>Exercise 4</h2>
+        <p>
+            In this exercise you will use CSS grid to duplicate the wire frame (picture) you have been given. Take note that we limited the height of the content div (parent to the color div's) to 400px; this is not a restriction you have to keep but will add to your learning.
+        </p>
+        <button type="button" class="collapsible">Hint</button>
+        <div class="collapsible-content">
+            <p>
+                In the previous activities you have been primarily concerned with the width of your elements. For this exercise you will need to adjust the height as well.
+            </p>
+            <h3>Properties Used:</h3>
+            <ul>
+                <li>
+                    display: grid;
+                </li>
+                <li>
+                    grid-template-columns:
+                </li>
+                <li>
+                    grid-column-row:
+                </li>
+            </ul>
+        </div>
+        <button type="button" class="collapsible">Picture</button>
+        <div class="collapsible-content">
+            <p>
+                <img src="images/exercise-4.png" alt="Exercise 4 Image">
+            </p>
+        </div>
+        <div id="content-4" class="content-area">
+            <div class="red"></div>
+            <div class="green"></div>
+            <div class="yellow"></div>
+            <div class="blue"></div>
+        </div>
+    </div>
+    <!-- Exercise 5 -->
+    <div class="exercise">
+        <h2>Exercise 5</h2>
+        <p>
+            In this exercise your goal in addition to correctly positioning elements as needed, is to wrap the text in the yellow box around the green box. Take note that we limited the height of the content div (parent to the color div's) to 400px; this is not a restriction you have to keep but will add to your learning.
+        </p>
+        <button type="button" class="collapsible">Hint</button>
+        <div class="collapsible-content">
+            <p>
+                First, remember to start by making all the elements the right size and shape. Second, grid layout is not the correct way to solve this exercise. In fact there is only one easy way to solve this exercise and that is with <code>float</code>. Remember that we float the element that we want the text to wrap itself around.
+            </p>
+            <h3>Properties Used:</h3>
+            <ul>
+                <li>
+                    float: left;
+                </li>
+            </ul>
+        </div>
+        <button type="button" class="collapsible">Picture</button>
+        <div class="collapsible-content">
+            <p>
+                <img src="images/exercise-5.png" alt="Exercise 5 Image">
+            </p>
+        </div>
+        <div id="content-5" class="content-area">
+            <div class="red"></div>
+            <div class="green"></div>
+            <div class="yellow">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel lacus molestie, placerat metus eget, vestibulum nibh. In gravida imperdiet tortor eget viverra. Fusce eu lorem a orci fringilla semper at ac mi. Aenean venenatis dignissim velit eu lacinia. Ut porttitor sapien odio. Nullam eleifend sem in nisl consequat viverra. Proin suscipit enim et luctus laoreet. Aenean condimentum mauris in finibus facilisis. Donec feugiat, lectus non ultrices condimentum, ex nulla rhoncus justo, ac finibus nisl odio ut sem. Nulla facilisi.
+                <br>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent vel lacus molestie, placerat metus eget, vestibulum nibh. In gravida imperdiet tortor eget viverra. Fusce eu lorem a orci fringilla semper at ac mi. Aenean venenatis dignissim velit eu lacinia. Ut porttitor sapien odio. Nullam eleifend sem in nisl consequat viverra. Proin suscipit enim et luctus laoreet. Vestibulum leo odio, interdum ut dui vitae, dignissim ornare ante. Mauris eget lacus fringilla, vehicula urna vel, pulvinar arcu. Donec feugiat, lectus non ultrices condimentum, ex nulla rhoncus justo, ac finibus nisl odio ut sem. Nulla facilisi.
+            </div>
+            <div class="blue"></div>
+        </div>
+    </div>
+    <!-- Exercise 6 -->
+    <div class="exercise">
+        <h2>Exercise 6</h2>
+        <p>
+            This exercise is all about visualizing the grid behind the layout. If you are having a hard time doing that keep in mind that in this exercise all the sizes are even multiples of 100.
+        </p>
+        <button type="button" class="collapsible">Hint</button>
+        <div class="collapsible-content">
+            <p>
+                You can also take a look at <a href="images/exercise-6-hint.png" target="_blank">this example image</a> where we have drawn on the grid lines. In this exercise you will find it easiest if you use px for the column width and not percentages. You can also use <code>z-index</code> to control the elements stacking order (layering).
+            </p>
+            <h3>Properties Used:</h3>
+            <ul>
+                <li>
+                    display:grid;
+                </li>
+                <li>
+                    grid-template-columns:
+                </li>
+                <li>
+                    grid-column:
+                </li>
+                <li>
+                    grid-row:
+                </li>
+                <li>
+                    <a href="https://www.w3schools.com/cssref/pr_pos_z-index.asp" target="_blank">z-index:</a>
+                </li>
+            </ul>
+        </div>
+        <button type="button" class="collapsible">Picture</button>
+        <div class="collapsible-content">
+            <p>
+                <img src="images/exercise-6.png" alt="Exercise 6 Image">
+            </p>
+        </div>
+        <div id="content-6" class="content-area">
+            <div class="red"></div>
+            <div class="green"></div>
+            <div class="yellow"></div>
+            <div class="blue"></div>
+        </div>
+    </div>
+    <!--
+        The following JavaScript code is used to make
+        the collapsible sections functional. Please do
+        not alter or remove the code. We have added
+        comments in case you are curious how it works.
+    -->
+    <script>
+        
+        /**
+         * This is what is known as a JavaScript polyfill. It is JavaScript code that
+         * adds support to older web browsers for newer JavaScript features. Not every
+         * new feature can be polyfilled and not every polyfill supports every browser.
+         * This polyfill will only support web browsers that have full ES5 support;
+         * the last generation of JavaScript, as of this writing ES6 is the latest
+         * version of JavaScript.
+         * 
+         * The following code was copied from:
+         * https://developer.mozilla.org/en-US/docs/Web/API/NodeList/forEach
+         */
+        if (window.NodeList && !NodeList.prototype.forEach) {
+            NodeList.prototype.forEach = function (callback, thisArg) {
+                thisArg = thisArg || window;
+                for (var i = 0; i < this.length; i++) {
+                    callback.call(thisArg, this[i], i, this);
+                }
+            };
+        }
+
+        /**
+         * Search the document (web page) and build an array of all elements that have
+         * a CSS class of collapsible.
+         */
+        var collapsibles = document.querySelectorAll( '.collapsible' );
+
+        /**
+         * Loop though this array of elements we found. Normally we would provide a
+         * function name to forEach and that function would be called for every item
+         * in our array but we choose to use what is known as an anonymous function.
+         * Instead of calling out to the function we put the function right in place.
+         */
+        collapsibles.forEach( function( collapsible ){
+            /**
+             * Add an event listener to each item (collapsible section) we found.
+             * When the user clicks on this item on the web page we will call (run)
+             * the toggleCollapsible function.
+             */
+            collapsible.addEventListener( 'click', toggleCollapsible );
+        } );
+
+        /**
+         * When called by an item (collapsible section) toggle (automatically add or
+         * remove) the CSS class open from the item. We have CSS code that will
+         * display the hidden collapsible section when the open class is added to the
+         * item.
+         */
+        function toggleCollapsible() {
+            this.classList.toggle( 'open' );
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,318 @@
+/**
+ *
+ * Page Styles
+ *
+ * These styles are for the page. Please do not edit them. Scroll down
+ * until you see the activity CSS and that is where you can start editing.
+ * 
+ */
+
+.exercise {
+    width: 600px; 
+    margin: 20px auto;
+    font-size: 20px;
+    line-height: 30px;
+    font-family: Arial, sans-serif; 
+    border: 1px solid black; 
+    padding: 10px 20px; 
+    clear:both; 
+    overflow: auto;
+} 
+
+.collapsible {
+    position: relative;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+    background-color: #0076b6;
+    padding: 20px 3rem 20px 20px;
+    margin: 0 0 20px 0;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.collapsible:after {
+    position: absolute;
+    content: '+';
+    top: 10px;
+    right: 20px;
+    font-size: 2.4rem;
+    font-weight: bold;
+}
+
+.collapsible.open:after {
+    content: 'x';
+}
+
+.collapsible.open + .collapsible-content {
+    max-height: none;
+    padding: 0 20px;
+    border-top: 2px solid #0076b6;
+    border-bottom: 2px solid #0076b6;
+    background-color: rgba(0, 118, 182, 0.05);
+}
+
+.collapsible-content {
+    position: relative;
+    max-height: 0;
+    overflow: hidden;
+    margin: -22px -20px 20px -20px;
+    transition: max-height 0.2s ease-out;
+}
+
+.collapsible-content img {
+    width: 100%;
+    height: auto;
+}
+
+.content-area {
+    margin: 10px 0;
+    overflow: auto;
+}
+
+
+
+
+/**
+ *
+ * ACTIVITY 1
+ *
+ * The styles in the following section are for exercise 1.
+ * Please add to or edit these styles to solve exercise 1.
+ * 
+ */
+
+#content-1 {
+   
+}
+
+#content-1 .red { 
+    width: 100px; 
+    height: 100px; 
+    background-color: red; 
+} 
+
+#content-1 .green {
+    width: 100px; 
+    height: 100px; 
+    background-color: green; 
+} 
+
+#content-1 .yellow {
+    width: 100px; 
+    height: 100px; 
+    background-color: gold; 
+} 
+
+#content-1 .blue {
+    width: 100px; 
+    height: 100px; 
+    background-color: blue; 
+}
+
+/* END ACTIVITY 1 */
+
+
+/**
+ *
+ * ACTIVITY 2
+ *
+ * The styles in the following section are for exercise 2.
+ * Please add to or edit these styles to solve exercise 2.
+ * 
+ */
+
+#content-2 {
+    
+}
+
+#content-2 .red {
+    width: 100px; 
+    height: 100px; 
+    background-color: red; 
+} 
+
+#content-2 .green { 
+    width: 100px; 
+    height: 100px; 
+    background-color: green; 
+} 
+
+#content-2 .yellow {
+    width: 100px; 
+    height: 100px; 
+    background-color: gold; 
+} 
+
+#content-2 .blue {
+    width: 100px; 
+    height: 100px; 
+    background-color: blue; 
+}
+
+/* END ACTIVITY 2 */
+
+
+/**
+ *
+ * ACTIVITY 3
+ *
+ * The styles in the following section are for exercise 3.
+ * Please add to or edit these styles to solve exercise 3.
+ * 
+ */
+
+#content-3 {
+    
+}
+
+#content-3 .red {
+    width: 100px; 
+    height: 100px; 
+    background-color: red; 
+} 
+
+#content-3 .green { 
+    width: 100px; 
+    height: 100px; 
+    background-color: green; 
+} 
+
+#content-3 .yellow {
+    width: 100px; 
+    height: 100px; 
+    background-color: gold; 
+} 
+
+#content-3 .blue {
+    width: 100px; 
+    height: 100px; 
+    background-color: blue; 
+}
+
+/* END ACTIVITY 3 */
+
+
+/**
+ *
+ * ACTIVITY 4
+ *
+ * The styles in the following section are for exercise 4.
+ * Please add to or edit these styles to solve exercise 4.
+ * 
+ */
+
+#content-4 {
+    height: 400px;
+}
+
+#content-4 .red {
+    width: 100px; 
+    height: 100px; 
+    background-color: red; 
+} 
+
+#content-4 .green {
+    width: 100px; 
+    height: 100px; 
+    background-color: green; 
+} 
+
+#content-4 .yellow {
+    width: 100px; 
+    height: 100px; 
+    background-color: gold; 
+} 
+
+#content-4 .blue {
+    width: 100px; 
+    height: 100px; 
+    background-color: blue; 
+}
+
+/* END ACTIVITY 4 */
+
+
+/**
+ *
+ * ACTIVITY 5
+ *
+ * The styles in the following section are for exercise 5.
+ * Please add to or edit these styles to solve exercise 5.
+ * 
+ */
+
+#content-5 {
+    height: 400px;
+}
+
+#content-5 .red { 
+    width: 100px; 
+    height: 100px; 
+    background-color: red; 
+}
+
+#content-5 .green { 
+    width: 100px; 
+    height: 100px; 
+    background-color: green; 
+}
+
+#content-5 .yellow {
+    width: 100px; 
+    height: 100px; 
+    background-color: gold; 
+}
+
+#content-5 .blue {
+    width: 100px; 
+    height: 100px; 
+    background-color: blue; 
+}
+
+/* END ACTIVITY 5 */
+
+
+/**
+ *
+ * ACTIVITY 6
+ *
+ * The styles in the following section are for exercise 6.
+ * Please add to or edit these styles to solve exercise 6.
+ * 
+ */
+
+
+#content-6 {
+    
+}
+
+#content-6 .red {
+    width: 100px; 
+    height: 100px; 
+    background-color: red; 
+} 
+
+#content-6 .green {
+    width: 100px; 
+    height: 100px; 
+    background-color: green; 
+} 
+
+#content-6 .yellow {
+    width: 100px; 
+    height: 100px; 
+    background-color: gold; 
+} 
+
+#content-6 .blue {
+    width: 100px; 
+    height: 100px; 
+    background-color: blue; 
+}
+
+/* END ACTIVITY 6 */

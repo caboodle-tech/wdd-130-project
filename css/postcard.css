@@ -1,0 +1,110 @@
+.postcard {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    width: 650px;
+    padding: 15px;
+    border: 1px solid #000;
+    background: url( '../assets/contact/parchment-texture.jpg' ) no-repeat center;
+    background-size: cover;
+    -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.30);
+    -moz-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.30);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.30);
+}
+
+.postcard .stamp {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 70px;
+    height: 80px;
+    border: 1px solid #000;
+    background: url( '../assets/contact/stamp.jpg' ) no-repeat center;
+    background-size: cover;
+    -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.30);
+    -moz-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.30);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.30);
+}
+
+.postcard .stamp .cost {
+    position: absolute;
+    right: 2px;
+    bottom: 2px;
+    font-weight: bold;
+    color: #ffeb00;
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: rgb(0 0 0 / 0.7);
+    stroke: rgb(0 0 0 / 0.7);
+}
+
+.postcard .title {
+    grid-column: 1/3;
+    height: 50px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 24px;
+    line-height: 50px;
+}
+
+.postcard form {
+    border-right: 1px solid #000000;
+    padding: 15px 15px 15px 0;
+    grid-column: 1;
+}
+
+.postcard form label {
+    display: block;
+    width: 100%;
+}
+
+.postcard form input {
+    display: block;
+    width: 100%;
+    margin: 5px 0 10px 0;
+    padding: 5px;
+    border: 0;
+    border-bottom: 1px solid #000000;
+    background-color: rgba(255,255,255,0);
+}
+
+.postcard form textarea {
+    resize: none;
+    display: block;
+    width: 100%;
+    height: 80px;
+    margin: 5px 0 10px 0;
+    padding: 5px;
+    border: 1px dashed #000000;
+    background-color: rgba(255,255,255,0);
+}
+
+.postcard form input[type="submit"] {
+    display: block;
+    font-size: 18px;
+    width: initial;
+    padding: 5px 15px;
+    margin: 15px auto 0 auto;
+    border: 1px solid #000000;
+    background-color: #ccc3ab;
+    cursor: pointer;
+    -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.30);
+    -moz-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.30);
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.30);
+}
+
+.postcard .address {
+    grid-column: 2;
+}
+
+.postcard .address .line {
+    display: block;
+    height: 24px;
+    margin: 0 0 0 15px;
+    border-bottom: 1px solid #000000;
+}
+
+.postcard .footer {
+    grid-column: 1/3;
+    height: 5px;
+}
