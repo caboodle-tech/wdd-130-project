@@ -1,66 +1,249 @@
-html,
+:root {
+    /* Settings */
+    --spacing: 15px;
+    --font-size: 1.15rem;
+    /* Normal Colors */
+    --background-color: white;
+    --alt-background-color: gainsboro;
+    --font-color: black;
+    --alt-font-color: darkslategray;
+    --border-color: black;
+    /* Dark Mode Colors */
+    --dark-background-color: black;
+    --dark-alt-background-color: darkslategray;
+    --dark-font-color: white;
+    --dark-alt-font-color: gainsboro;
+    --dark-border-color: white;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    text-rendering: optimizeLegibility;
+}
+
 body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100%;
-  text-rendering: optimizeLegibility;
+    display: flex;
+    flex-direction: column;
+    font-size: 62.5%;
 }
-body {
-  display: flex;
-  flex-direction: column;
-  font-size: 62.5%;
+
+header {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: auto 1fr;
+    font-size: var(--font-size);
+    padding: var(--spacing);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--alt-font-color);
+    background-color: var(--alt-background-color);
 }
-body header {
-  display: flex;
-  flex-direction: row;
-  font-size: 1.15rem;
-  border-bottom: 1px solid #000000;
-  padding: 15px;
+
+header a {
+    color: var(--alt-font-color);
 }
-body header nav {
-  flex: 1;
-  text-align: right;
+
+header nav {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
 }
-body header nav ul {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
+
+header nav ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
 }
-body header nav ul li {
-  display: inline-block;
-  padding: 7.5px;
-  margin-right: 7.5px;
+
+header nav ul li {
+    display: inline-block;
+    padding: 7.5px;
+    margin-right: 7.5px;
 }
-body main {
-  font-size: 1.15rem;
-  flex: 1;
-  padding: 15px;
-  -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
-  -moz-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.25);
+
+main {
+    flex: 1;
+    font-size: var(--font-size);
+    padding: var(--spacing);
+    color: var(--font-color);
+    background-color: var(--background-color);
 }
-body footer {
-  display: flex;
-  flex-direction: row;
-  font-size: 1.15rem;
-  border-top: 1px solid #000000;
-  padding: 15px;
+
+footer {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: auto 1fr auto;
+    font-size: var(--font-size);
+    border-top: 1px solid var(--border-color);
+    padding: var(--spacing);
+    color: var(--alt-font-color);
+    background-color: var(--alt-background-color);
 }
-body footer #legal {
-  flex: 1;
+
+footer a {
+    color: var(--alt-font-color);
 }
-body footer nav {
-  flex: 1;
-  text-align: right;
+
+footer #legal {
+    grid-row: 1;
+    grid-column: 1;
+    display: flex;
+    align-items: center;
 }
-body footer nav ul {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
+
+footer nav {
+    grid-row: 1;
+    grid-column: 2;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
 }
-body footer nav ul li {
-  display: inline-block;
-  padding: 7.5px;
-  margin-right: 7.5px;
+
+footer nav ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+}
+
+footer nav ul li {
+    display: inline-block;
+    padding: 7.5px;
+    margin-right: 7.5px;
+}
+
+footer #dark-mode {
+    grid-row: 1;
+    grid-column: 3;
+}
+
+footer #dark-mode .icon {
+    position: relative;
+    display: inline-block;
+    z-index: 100;
+    pointer-events: none;
+}
+
+footer #dark-mode .icon svg path {
+    fill: var(--background-color);
+}
+
+footer #dark-mode #sun-icon svg {
+    transform: scale(0.9);
+    position: absolute;
+    top: -32px;
+    left: 15px;
+}
+
+footer #dark-mode #moon-icon svg {
+    transform: scale(0.85);
+    position: absolute;
+    top: -32px;
+    right: 15px;
+}
+
+footer #dark-mode #tgl-wrapper {
+    display: inline-block;
+}
+
+footer #dark-mode #tgl-wrapper .tgl {
+    display: none;
+}
+
+footer #dark-mode #tgl-wrapper .tgl, .tgl:after, .tgl:before, .tgl *, .tgl *:after, .tgl *:before, .tgl + .tgl-btn {
+    box-sizing: border-box;
+}
+
+footer #dark-mode #tgl-wrapper .tgl::-moz-selection, .tgl:after::-moz-selection, .tgl:before::-moz-selection, .tgl *::-moz-selection, .tgl *:after::-moz-selection, .tgl *:before::-moz-selection, .tgl + .tgl-btn::-moz-selection {
+    background: none;
+}
+
+footer #dark-mode #tgl-wrapper .tgl::selection, .tgl:after::selection, .tgl:before::selection, .tgl *::selection, .tgl *:after::selection, .tgl *:before::selection, .tgl + .tgl-btn::selection {
+    background: none;
+}
+
+footer #dark-mode #tgl-wrapper .tgl + .tgl-btn {
+    outline: 0;
+    display: block;
+    width: 80px;
+    height: 40px;
+    position: relative;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 30px;
+    padding: 3px;
+    transition: all 0.4s ease;
+}
+
+footer #dark-mode #tgl-wrapper .tgl + .tgl-btn:after, .tgl + .tgl-btn:before {
+    position: relative;
+    display: block;
+    content: "";
+    width: 50%;
+    height: 100%;
+}
+
+footer #dark-mode #tgl-wrapper .tgl + .tgl-btn:after {
+    left: 0;
+    border-radius: 50%;
+    background-color: var(--border-color);
+    transition: all 0.2s ease;
+}
+
+footer #dark-mode #tgl-wrapper .tgl + .tgl-btn:before {
+    display: none;
+    transition: all 0.2s ease;
+}
+
+footer #dark-mode #tgl-wrapper .tgl:checked + .tgl-btn:after {
+    left: 50%;
+    transition: all 0.2s ease;
+}
+
+/*===========================================*\
+  APPLY DARK MODE COLORS WHEN DARK MODE IS ON 
+\*===========================================*/
+
+body.dark-mode header {
+    border-bottom: 1px solid var(--dark-border-color);
+    color: var(--dark-alt-font-color);
+    background-color: var(--dark-alt-background-color);
+}
+
+body.dark-mode header a {
+    color: var(--dark-alt-font-color);
+}
+
+body.dark-mode main {
+    color: var(--dark-font-color);
+    background-color: var(--dark-background-color);
+}
+
+body.dark-mode footer {
+    border-top: 1px solid var(--dark-border-color);
+    color: var(--dark-alt-font-color);
+    background-color: var(--dark-alt-background-color);
+}
+
+body.dark-mode footer a {
+    color: var(--dark-alt-font-color);
+}
+
+body.dark-mode footer #dark-mode .icon svg path {
+    fill: var(--dark-background-color);
+}
+
+body.dark-mode footer #dark-mode #tgl-wrapper .tgl + .tgl-btn {
+    background-color: var(--dark-background-color);
+    border: 1px solid var(--dark-border-color);
+}
+
+body.dark-mode footer #dark-mode #tgl-wrapper .tgl + .tgl-btn:after {
+    background-color: var(--dark-border-color);
 }
